@@ -58,7 +58,6 @@ export default class Hapi {
 
   handlerForModelAndOperation(model, operation) {
     return (request, reply) => {
-      console.log(request);
       krakenClient.dispatch(
         model,
         operation,
