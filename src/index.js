@@ -3,11 +3,9 @@ import Hapi from 'hapi';
 import Swaggerize from 'swaggerize-hapi';
 import { default as HapiGen } from './hapi';
 
-if (process.env.SWAGGER_FILE) {
-  throw new RangeError('SWAGGER_FILE environment path variable must be defined');
-}
+const swaggerFile = process.env.SWAGGER_FILE ? process.env.SWAGGER_FILE : './swagger.yaml';
 
-const manifest = YAML.load(process.env.SWAGGER_FILE);
+const manifest = YAML.load(swaggerFile);
 
 const server = new Hapi.Server();
 const generator = new HapiGen(manifest);
