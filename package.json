@@ -13,8 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@nullfox/kraken-transport": "0.0.4",
     "hapi": "^13.3.0",
-    "kraken-transport": "git+https://nullfox:Fx112rnch@github.com/nullfox/kraken-transport.git",
     "lodash": "^4.11.1",
     "qs": "^6.1.0",
     "swaggerize-hapi": "^2.0.0",

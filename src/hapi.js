@@ -2,21 +2,23 @@ import Util from 'util';
 import QS from 'qs';
 import _ from 'lodash';
 import YAML from 'yamljs';
-import { Client } from 'kraken-transport';
 
 const methods = [
   'get', 'post', 'put', 'delete', 'patch'
 ];
 
-const krakenClient = new Client(new Client.Discovery.Localhost());
-
 export default class Hapi {
-  constructor(swaggerOrPath) {
+  constructor(swaggerOrPath, client) {
     if (_.isString(swaggerOrPath)) {
       swaggerOrPath = YAML.load(swaggerOrPath);
     }
 
     this._manifest = swaggerOrPath;
+    this._client = client;
+  }
+
+  get client() {
+    return this._client;
   }
 
   get manifest() {
@@ -57,8 +59,10 @@ export default class Hapi {
   }
 
   handlerForModelAndOperation(model, operation) {
+    const client = this.client;
+
     return (request, reply) => {
-      krakenClient.dispatch(
+      client.dispatch(
         model,
         operation,
         {

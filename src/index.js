@@ -1,14 +1,22 @@
 import YAML from 'yamljs';
 import Hapi from 'hapi';
 import Swaggerize from 'swaggerize-hapi';
+import { Client } from 'kraken-transport';
 import { default as HapiGen } from './hapi';
 
-const swaggerFile = process.env.SWAGGER_FILE ? process.env.SWAGGER_FILE : './swagger.yaml';
+let transport = new Client.Discovery.Localhost();
 
-const manifest = YAML.load(swaggerFile);
+if (Client.Discovery.Quadra.isAvailable()) {
+  transport = new Client.Discovery.Quadra();
+}
+
+const client = new Client(transport);
+
+const filePath = process.env.SWAGGER_FILE ? process.env.SWAGGER_FILE : './swagger.yaml';
+const manifest = YAML.load(filePath);
 
 const server = new Hapi.Server();
-const generator = new HapiGen(manifest);
+const generator = new HapiGen(manifest, client);
 
 server.connection({
   port: 8080
