@@ -13,6 +13,7 @@ RUN ["npm", "install", "zmq", "msgpack"]
 
 # Copy source nad compile
 COPY lib /root/lib
+COPY swagger.yaml /root/swagger.yaml
 
 # Clean up after ourselves (removes npm token)
 RUN ["npm", "prune", "--production"]
