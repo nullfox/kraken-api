@@ -2,21 +2,16 @@ FROM nullfox/nodejs-zmq
 
 WORKDIR /root
 
-# Capture the token and push into npmrc
-ARG NPM_TOKEN
-RUN echo $NPM_TOKEN > .npmrc
-
 # Copy package and install
+COPY node_modules /root/node_modules
 COPY package.json /root/package.json
-RUN ["npm", "install"]
+RUN ["npm", "install", "zeromq", "msgpack"]
 
 # Copy source nad compile
-COPY src /root/src
-RUN ["npm", "run", "build"]
+COPY lib /root/lib
 
 # Clean up after ourselves (removes npm token)
 RUN ["npm", "prune", "--production"]
-RUN ["rm", "-f", ".npmrc"]
 
 EXPOSE 8080
 
