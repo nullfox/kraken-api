@@ -9,7 +9,7 @@ RUN echo $NPM_TOKEN > .npmrc
 # Copy package and install
 COPY node_modules /root/node_modules
 COPY package.json /root/package.json
-RUN ["npm", "install", "@nullfox/kraken-transport"]
+RUN ["npm", "install", "zmq", "msgpack"]
 
 # Copy source nad compile
 COPY lib /root/lib
