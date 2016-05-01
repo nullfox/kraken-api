@@ -1,7 +1,7 @@
 import YAML from 'yamljs';
 import Hapi from 'hapi';
 import Swaggerize from 'swaggerize-hapi';
-import { Client } from 'kraken-transport';
+import { Client } from '@nullfox/kraken-transport';
 import { default as HapiGen } from './hapi';
 
 let transport = new Client.Discovery.Localhost();
