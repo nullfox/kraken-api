@@ -67,7 +67,7 @@ export default class Hapi {
         operation,
         {
           params: request.params,
-          filters: QS.parse(request.query).filters
+          filters: QS.parse(request.query).filters || {}
         },
         (error, response) => {
           reply(error || response);
