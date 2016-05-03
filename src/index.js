@@ -1,5 +1,6 @@
 import YAML from 'yamljs';
 import Hapi from 'hapi';
+import QS from 'qs';
 import _ from 'lodash';
 import Swaggerize from 'swaggerize-hapi';
 import { Client } from '@nullfox/kraken-transport';
@@ -28,11 +29,20 @@ server.ext('onRequest', (request, reply) => {
 
   if (request.method === 'post' && override) {
     request.raw.req.on('data', (body) => {
-      request.query = _.merge(
-        request.query || {},
-        JSON.parse(body.toString())
-      );
+      let query = request.query || {};
 
+      try {
+        const parsed = JSON.parse(body.toString());
+        query = _.merge(query, parsed);
+      } catch (err) {
+        // No-op
+      }
+
+      if (_.has(query, 'filters') && _.isString(query.filters)) {
+        query.filters = QS.parse(new Buffer(query.filters, 'base64').toString('utf8'));
+      }
+
+      request.query = query;
       request.setMethod(override);
 
       reply.continue();
